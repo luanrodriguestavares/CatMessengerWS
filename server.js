@@ -3,14 +3,13 @@ import http from 'http';
 
 // Cria um servidor HTTP simples
 const server = http.createServer((req, res) => {
-  res.writeHead(200, { 'Content-Type': 'text/plain' });
-  res.end('Servidor WebSocket está em execução\n');
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.end('WebSocket server is running\n');
 });
 
 // Cria um servidor WebSocket e o anexa ao servidor HTTP
 const wss = new WebSocketServer({ server });
 
-// Define a função para lidar com novas conexões WebSocket
 wss.on('connection', (ws) => {
   // Envia uma mensagem de boas-vindas ao novo cliente
   ws.send('Bem-vindo ao CatMessenger! 🐈😺');
@@ -18,8 +17,8 @@ wss.on('connection', (ws) => {
   // Lida com mensagens recebidas dos clientes
   ws.on('message', (message) => {
     // Envia a mensagem recebida para todos os clientes conectados
-    wss.clients.forEach((client) => {
-      if (client.readyState === WebSocket.OPEN) {
+    wss.clients.forEach(client => {
+      if (client.readyState === client.OPEN) {
         client.send(message);
       }
     });
@@ -29,15 +28,7 @@ wss.on('connection', (ws) => {
   ws.on('close', () => {
     console.log('Conexão WebSocket encerrada');
   });
-
-  // Lida com erros na conexão
-  ws.on('error', (error) => {
-    console.error(`Erro na conexão WebSocket: ${error.message}`);
-  });
 });
 
 // Inicia o servidor na porta 8080
-const PORT = 8080;
-server.listen(PORT, () => {
-  console.log(`Servidor está rodando na porta ${PORT}`);
-});
+server.listen(8080);
